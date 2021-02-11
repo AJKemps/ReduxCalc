@@ -8,20 +8,14 @@ import { pressClear, pressEquals, pressNum, pressOp } from './reducers/reducer';
 import './App.css';
 
 function App({ calcState, pressNumD, pressEqualsD, pressClearD, pressOpD }) {
+  // initial input value on page load is the first item in the redux state stack
   const [input, setInput] = useState(calcState.stack[0]);
 
-  const handleEqual = () => {
-    console.log('bob', calcState);
-    let result = eval(calcState);
-    pressEqualsD(result);
-  };
-
+  // useEffect to grab the last item in the state.stack array and set as input value on update from redux state
   useEffect(() => {
     let last = calcState.stack.length - 1;
     setInput(calcState.stack[last]);
   }, [calcState.stack]);
-
-  console.log(calcState, calcState[calcState.length - 1]);
 
   return (
     <div className="App">
@@ -59,10 +53,12 @@ function App({ calcState, pressNumD, pressEqualsD, pressClearD, pressOpD }) {
   );
 }
 
+// object to map state to props
 const mapStateToProps = (state) => ({
   calcState: state,
 });
 
+// object for grabbing actions and binding payloads to action dispatches
 const bindAC = (dispatch) =>
   bindActionCreators(
     {
